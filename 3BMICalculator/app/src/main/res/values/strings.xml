@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">3 BMI Calculator</string>
+    <string name="hint_height">Height in meter</string>
+    <string name="hint_weight">Weight in kg</string>
+    <string name="button_calculate">Calculate</string>
+    <string name="result">Result</string>
+    <string name="overweight">You are overweight</string>
+    <string name="underweight">You are underweight</string>
+    <string name="normal">You are normal</string>
+</resources>

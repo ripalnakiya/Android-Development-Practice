@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">6 Dynamic Fragments</string>
+    <string name="frag1">Frag1</string>
+    <string name="frag2">Frag2</string>
+    <string name="frag3">Frag3</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
