@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -14,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._22Notification"
         tools:targetApi="31">
-        <activity
-            android:name=".NotificationActivity"
-            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
