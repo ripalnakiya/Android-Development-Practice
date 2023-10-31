@@ -11,12 +11,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,25 +27,57 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, 1);
         }
 
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.WRITE_CONTACTS}, 2);
+        }
+
+        EditText editText = findViewById(R.id.editText);
+        Button addButton = findViewById(R.id.addButton);
+        Button deleteButton = findViewById(R.id.deleteButton);
+        Button showButton = findViewById(R.id.showButton);
+
         ContentResolver contentResolver = getContentResolver();
 
-        String[] mProjection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME,
-        };
-
-        String mSelectionClause = ContactsContract.Contacts.DISPLAY_NAME + " = ?";
-        String[] mSelectionArguments = new String[] {"Captain Jack"};
-        String mOrderBy = ContactsContract.Contacts.DISPLAY_NAME;
-
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, mProjection, null, null, mOrderBy);
-
-        if(cursor != null && cursor.getCount() > 0) {
-            while(cursor.moveToNext()) {
-                String contactId = cursor.getString(0);
-                String displayName = cursor.getString(1);
-                Log.d("Contacts.this", contactId + " : " + displayName);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
             }
-        }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String whereClause = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " = '" + editText.getText().toString() + "'";
+                contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI, whereClause, null);
+            }
+        });
+        
+        showButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] mProjection = new String[] {
+                        ContactsContract.Contacts._ID,
+                        ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
+                };
+
+                String mSelectionClause = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " = ?";
+                String[] mSelectionArguments = new String[] {"Captain Jack"};
+                String mOrderBy = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
+
+                Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, mProjection, null, null, null);
+
+                if(cursor != null && cursor.getCount() > 0) {
+                    while(cursor.moveToNext()) {
+                        String contactId = cursor.getString(0);
+                        String displayName = cursor.getString(1);
+                        Log.d("Contacts.this", contactId + " : " + displayName);
+                    }
+                }
+
+                Toast.makeText(MainActivity.this, "See Logs : Contacts.this", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
     }
 }
