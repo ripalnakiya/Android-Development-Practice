@@ -37,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
                 ContactsContract.Contacts.DISPLAY_NAME,
         };
 
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, mProjection, null, null, null);
+        String mSelectionClause = ContactsContract.Contacts.DISPLAY_NAME + " = ?";
+        String[] mSelectionArguments = new String[] {"Captain Jack"};
+        String mOrderBy = ContactsContract.Contacts.DISPLAY_NAME;
+
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, mProjection, null, null, mOrderBy);
 
         if(cursor != null && cursor.getCount() > 0) {
             while(cursor.moveToNext()) {
