@@ -5,8 +5,11 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -45,11 +48,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactName = editText.getText().toString();
+
+                // Create a new contact and insert it
+                ContentValues values = new ContentValues();
+                values.put(ContactsContract.RawContacts.ACCOUNT_NAME, (String) null);
+                values.put(ContactsContract.RawContacts.ACCOUNT_TYPE, (String) null);
+
+                Uri rawContactUri = contentResolver.insert(ContactsContract.RawContacts.CONTENT_URI, values);
+
+                long rawContactId = ContentUris.parseId(rawContactUri);
+
+                // Add contact's name
+                values.clear();
+                values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+                values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+                values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contactName);
+                contentResolver.insert(ContactsContract.Data.CONTENT_URI, values);
+
+                Toast.makeText(MainActivity.this, "Contact added: " + contactName, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String whereClause = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " = '" + editText.getText().toString() + "'";
+                String contactName = editText.getText().toString();
+
+                String whereClause = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " = '" + contactName + "'";
                 contentResolver.delete(ContactsContract.RawContacts.CONTENT_URI, whereClause, null);
+
+                Toast.makeText(MainActivity.this, "Contact deleted: " + contactName, Toast.LENGTH_SHORT).show();
+
             }
         });
         
