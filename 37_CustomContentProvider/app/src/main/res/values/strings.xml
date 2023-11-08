@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">37 Custom Content Provider</string>
+    <string name="name">Name</string>
+    <string name="department">Department</string>
+</resources>
