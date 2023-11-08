@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">32 Sending Implicit Intent</string>
+    <string name="send_mail">Send Mail</string>
+</resources>
