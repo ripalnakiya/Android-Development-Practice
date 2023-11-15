@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">42 AsyncTask And WeakReference</string>
+    <string name="start">Start</string>
+</resources>
