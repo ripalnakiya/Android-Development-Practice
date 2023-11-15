@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:textSize="28sp"
+        android:backgroundTint="#E91E63" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/stop"
+        android:textSize="28sp"
+        android:backgroundTint="#8BC34A"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/taskAButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/task_a"
+        android:textSize="28sp"
+        android:backgroundTint="#2196F3" />
+
+    <Button
+        android:id="@+id/taskBButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/task_b"
+        android:textSize="28sp"
+        android:backgroundTint="#00BCD4"/>
+
+</LinearLayout>

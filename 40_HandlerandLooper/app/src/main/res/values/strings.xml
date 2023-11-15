@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">40 Handler and Looper</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="task_a">Task A</string>
+    <string name="task_b">Task B</string>
+</resources>
