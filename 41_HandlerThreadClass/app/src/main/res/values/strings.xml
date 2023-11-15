@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">41 HandlerThread Class</string>
+    <string name="do_work">Do Work</string>
+    <string name="remove_messages">Remove Messages</string>
+</resources>
