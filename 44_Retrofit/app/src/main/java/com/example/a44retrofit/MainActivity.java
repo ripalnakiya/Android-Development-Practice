@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +29,21 @@ public class MainActivity extends AppCompatActivity {
 
         resultView = findViewById(R.id.resultView);
 
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         jsonPlaceholderAPI = retrofit.create(JsonPlaceholderAPI.class);
 
 //        onGetPostRequest();
 //        onGetCommentRequest();
-        onPostRequest();
+//        onPostRequest();
+//        onPutRequest();
+//        onPatchRequest();
+        onDeleteRequest();
     }
 
     private void onGetPostRequest() {
@@ -119,6 +127,74 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Post> call, Throwable t) {
+                resultView.setText(t.getMessage());
+            }
+        });
+    }
+
+    private void onPutRequest() {
+        Post post = new Post(12, null, "New Text");
+        Call<Post> call = jsonPlaceholderAPI.putPost(5, post);
+
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (!response.isSuccessful()) {
+                    resultView.setText("Code: " + response.code());
+                    return;
+                }
+                Post postRespose = response.body();
+                resultView.setText("Code: " + response.code() + "\n\n");
+                showPost(postRespose);
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                resultView.setText(t.getMessage());
+            }
+        });
+    }
+
+    private void onPatchRequest() {
+        Post post = new Post(12, null, "New Text");
+        Call<Post> call = jsonPlaceholderAPI.patchPost(1, post);
+        // This modifies only the userId and text field (Leaving id and title as original)
+
+        // In some cases, we really want to replace the original title with a null value
+        // In that case we'll need to force Gson to serialize null values
+        // Gson gson = new GsonBuilder().serializeNulls().create(); and then pass it as argument as Convertor Factory
+        // See line 36
+
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (!response.isSuccessful()) {
+                    resultView.setText("Code: " + response.code());
+                    return;
+                }
+                Post postRespose = response.body();
+                resultView.setText("Code: " + response.code() + "\n\n");
+                showPost(postRespose);
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                resultView.setText(t.getMessage());
+            }
+        });
+    }
+
+    private void onDeleteRequest() {
+        Call<Void> call = jsonPlaceholderAPI.deletePost(1);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                resultView.setText("Code: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 resultView.setText(t.getMessage());
             }
         });
