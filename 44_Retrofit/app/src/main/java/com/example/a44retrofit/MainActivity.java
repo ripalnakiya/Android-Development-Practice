@@ -1,5 +1,6 @@
 package com.example.a44retrofit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,10 +9,15 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,19 +37,39 @@ public class MainActivity extends AppCompatActivity {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
 
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @NonNull
+                    @Override
+                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
+                        Request originalRequest = chain.request();
+
+                        Request newRequest = originalRequest.newBuilder()
+                                .header("Intercept-Header", "abc")
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
                 .build();
 
         jsonPlaceholderAPI = retrofit.create(JsonPlaceholderAPI.class);
 
-//        onGetPostRequest();
+        onGetPostRequest();
 //        onGetCommentRequest();
 //        onPostRequest();
 //        onPutRequest();
 //        onPatchRequest();
-        onDeleteRequest();
+//        onDeleteRequest();
     }
 
     private void onGetPostRequest() {
@@ -136,6 +162,13 @@ public class MainActivity extends AppCompatActivity {
         Post post = new Post(12, null, "New Text");
         Call<Post> call = jsonPlaceholderAPI.putPost(5, post);
 
+//        Call<Post> call = jsonPlaceholderAPI.putPost("abc",5, post);
+
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Map-Header1", "abc");
+//        headers.put("Map-Header2", "def");
+//        Call<Post> call = jsonPlaceholderAPI.putPost(headers, 5, post);
+
         call.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(Call<Post> call, Response<Post> response) {
@@ -163,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         // In some cases, we really want to replace the original title with a null value
         // In that case we'll need to force Gson to serialize null values
         // Gson gson = new GsonBuilder().serializeNulls().create(); and then pass it as argument as Convertor Factory
-        // See line 36
+        // See retrofit object creation
 
         call.enqueue(new Callback<Post>() {
             @Override
