@@ -6,21 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".IntermediateActivity">
 
-    <Button
-        android:id="@+id/mainButton"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notification to MainActvitiy"
-        android:textSize="26sp"/>
-
-    <Button
-        android:id="@+id/secondButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notification to Second Activity"
-        android:layout_marginTop="30dp"
-        android:textSize="26sp"/>
+        android:text="Intermediate Activity"
+        android:textSize="28sp"/>
 
 </LinearLayout>
