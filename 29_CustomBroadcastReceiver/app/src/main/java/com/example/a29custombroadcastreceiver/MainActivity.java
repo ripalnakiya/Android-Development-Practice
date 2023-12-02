@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter("com.example.custombroadcast.ACTION_CUSTOM");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(customBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
         }
     }
